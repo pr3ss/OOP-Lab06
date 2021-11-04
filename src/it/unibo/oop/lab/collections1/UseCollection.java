@@ -1,5 +1,11 @@
 package it.unibo.oop.lab.collections1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 /**
  * Example class using {@link java.util.List} and {@link java.util.Map}.
  * 
@@ -8,7 +14,13 @@ public final class UseCollection {
 
     private UseCollection() {
     }
-
+    
+    private static void addArrayHead(ArrayList<Integer> array, int elm) {
+    	array.add(array.get(array.size()-1));
+    	for(var i=array.size()-3; i>=0; i--) {
+    		array.set(i+1, array.get(i));
+    	}
+    }
     /**
      * @param s
      *            unused
@@ -63,5 +75,73 @@ public final class UseCollection {
         /*
          * 8) Compute the population of the world
          */
+    	
+    	final ArrayList<Integer> array = new ArrayList<>();
+    	final LinkedList<Integer> list;
+    	final Map<String,Long> mappa;
+    	int temp;
+    	long time;
+    	
+    	for(int i=1000; i<2000; i++) {
+    		array.add(i);
+    	}
+    	
+    	list = new LinkedList<>(array);
+    	
+    	temp = array.get(array.size()-1);
+    	array.set(array.size()-1 , array.get(0));
+    	array.set(0, temp);
+    	
+    	for(var elm: array) {
+    		System.out.println(elm);
+    	}
+    	
+    	time = System.nanoTime();
+    	for(int i=0; i<100_000; i++) {
+    		//addArrayHead(array,i);
+    	}
+    	time = System.nanoTime() - time;
+        System.out.println("Insert 100_000 in array head " + time+ "ns (" + time / 1_000_000 + "ms)");
+        
+       
+        time = System.nanoTime();
+    	for(int i=0; i<100_000; i++) {
+    		list.addFirst(i);
+    	}
+    	time = System.nanoTime() - time;
+        System.out.println("Insert 100_000 in LinkedList head " + time+ "ns (" + time / 1_000_000 + "ms)");
+        //System.out.println(list);
+        
+        
+        time = System.nanoTime();
+    	System.out.println(array.get(array.size()/2));
+    	time = System.nanoTime() - time;
+        System.out.println("Read middle of array " + time+ "ns (" + time / 1_000_000 + "ms)");
+        
+        time = System.nanoTime();
+    	int h=0;
+        for(var elm: list) {
+        	if(h==list.size()/2) {
+        		System.out.println(elm);
+        	}
+        	h++;
+    	}
+    	time = System.nanoTime() - time;
+        System.out.println("Read middle of LinkedList " + time+ "ns (" + time / 1_000_000 + "ms)");
+        
+        
+        mappa = new HashMap<>(Map.of("Africa",1_110_635_000L,"Americas",975_005_000L,"Antartica",0L,"Asia",4_298723000L,"Europe",742452000L,"Oceania",38304000L));
+        long population=0;
+        for(var elm: mappa.keySet()) {
+        	population+= mappa.get(elm);
+        }
+        
+        System.out.println("Population tot = "+population);
+        
+        
+        
+        
+        
+    	
     }
 }
